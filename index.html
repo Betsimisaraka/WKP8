@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hit parade</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main>
+        <header class="heading">
+            <h1>Hit parade</h1>
+        </header>
+        <form action="" class="form_submit" autocomplete="off">
+            <header>
+                <h4>Add a song</h4>
+            </header>
+            <fieldset>
+                <label for="title">Song title</label>
+                <input type="text" id="title" name="title" placeholder="Title">
+            </fieldset>
+            <fieldset>
+                <label for="author">Artist name</label>
+                <input type="text" id="author" name="author" placeholder="Artist name">
+            </fieldset>
+            <fieldset>
+                <label for="">Song style</label>
+                <select name="style" id="style">
+                    <option value="basesa">Basesa</option>
+                    <option value="slow">Slow</option>
+                    <option value="regue">Regue</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="fast">Fast</option>
+                </select>
+            </fieldset>
+            <fieldset>
+                <label for="length">Song length</label>
+                <input type="number" id="length" name="length" placeholder="Length">
+            </fieldset>
+            <fieldset>
+                <label for="picture">Artist picture</label>
+                <input type="url" id="picture" name="picture" placeholder="Url of the artist pic">
+            </fieldset>
+            <button type="submit" class="submitbtn">Add</button>
+        </form>
+        <form action="" class="form_filter">
+            <fieldset>
+                <label for="searchtitle">Search a song</label>
+                <input type="text" id="searchtitle" name="searchtitle" placeholder="Enter a song title">
+            </fieldset>
+            <fieldset>
+                <label for="selesctstyle">Select a style</label>
+                <select name="selectstyle" id="selectstyle">
+                    <option value="Basesa">Basesa</option>
+                    <option value="Slow">Slow</option>
+                    <option value="Regue">Regue</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Fast">Fast</option>
+                </select>
+            </fieldset>
+            <!-- <button class="reset">Reset filter</button> -->
+        </form>
+        <ul class="artist_list">
+            
+        </ul>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
