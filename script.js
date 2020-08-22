@@ -1,42 +1,28 @@
 // That's a list of songs sorted from the most popular to the least popular.
  
-let artists = [
-    {
-        title: "My heart will go on",
-        author: "Celine Dion",
-        style: 'slow',
-        length: "5:00min",
-        score: 2,
-        picture: "https://i.ytimg.com/vi/tT2gVblzFvY/maxresdefault.jpg",
-        id: 1598075633565,
-    },
-    {
-        title: "I have a dream",
-        author: "Westlife",
-        style: 'fast',
-        length: "4:00min",
-        score: 5,
-        picture: 'https://img.discogs.com/jlyypcLfymunUB-yW8bFRSWGqdk=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/A-152450-1573604885-8039.jpeg.jpg',
-        id: 1598075968375,
-    },
-    {
-        title: "Try everything",
-        author: "Sakirah",
-        style: 'Rock',
-        length: "3:30min",
-        score: 3,
-        picture: 'https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTE5NDg0MDU0NzExNDA0MDQ3/shakira-189151-1-402.jpg',
-        id: 1598075991052,
-    },
-];
+let artists = [];
 
 const formElement = document.querySelector('.form_submit');
 const artistList = document.querySelector('.artist_list');
+const formElement2 = document.querySelector('.form_filter');
+const searchInput = document.querySelector('#searchtitle');
+const selectStyle = document.querySelector('#selectstyle');
 
-const showArtists = () => {
-    // The song list is always sorted from the highest score song to the lowest.
-    const scoreSorted = artists.sort((a, b) => (b.score - a.score));
-    const html = artists.map(song => {
+const showArtists = (e) => {
+    let filteredArtists = [...artists];
+    // filter the author stuff if we want that
+    const artistsFiltered = filteredArtists.filter(artist => {
+        if (artist.author === formElement2.searchtitle.value) {
+            return true;
+        }
+        if (artist.style === formElement2.selectstyle.value) {
+            return true;
+        }
+        return false;
+    }); console.log(artistsFiltered);
+    //The song list is always sorted from the highest score song to the lowest.
+    const scoreSorted = filteredArtists.sort((a, b) => (b.score - a.score));
+    const html = filteredArtists.map(song => {
          return `
         <li>
         <img src="${song.picture}"
@@ -49,7 +35,7 @@ const showArtists = () => {
             <p>${song.author}</p>
             <small>${song.length}</small>
         </div>
-        <p>Score:${song.score}</p>
+        <p>Score:<span class="score">${song.score}</span></p>
         <div>
             <button value='${song.id}' class="updatebtn">+1</button>
             <button value="${song.id}" class="deletebtn">&times</button>
@@ -81,10 +67,18 @@ const displayAddBtn = e => {
     artistList.dispatchEvent(new CustomEvent('artistUpdated'));
 }
 
+// We wan delete a song from the list by clicking the bin icon.
 const deleteButton = idToDel => {
     artists = artists.filter(artist => artist.id !== idToDel);
     artistList.dispatchEvent(new CustomEvent('artistUpdated'));
 }
+
+const incrementScore = idToIncrem => {
+       const artistToUpdate = artists.find(artist => artist.id === idToIncrem);
+       //artistToUpdate.score = !artistToUpdate.score;
+
+    artistList.dispatchEvent(new CustomEvent('artistUpdated'));
+}; console.log(incrementScore());
 
 const handleClicks = e => {
     const delButton = e.target.closest('button.deletebtn');
@@ -92,19 +86,37 @@ const handleClicks = e => {
         const id = Number(delButton.value);
         deleteButton(id);
     }
+    const incrementbtn = e.target.closest('button.updatebtn')
+    if (incrementbtn) {
+        incrementScore();
+    }
 }
 
+const initLocalStorage = () => {
+    const artistsItems = JSON.parse(localStorage.getItem('artists'));
+    if (!artistsItems) {
+        artists = [];
+    } else {
+        artists = artistsItems;
+    }
+    artistList.dispatchEvent(new CustomEvent('artistUpdated'));
+};
 
+const updateLocalStorage = () => {
+    localStorage.setItem('artists', JSON.stringify(artists));
+};
+
+//EVENT LISTENER
 artistList.addEventListener('click', handleClicks);
 formElement.addEventListener('submit', displayAddBtn);
 artistList.addEventListener('artistUpdated', showArtists);
+artistList.addEventListener('artistUpdated', updateLocalStorage);
 window.addEventListener('DOMContentLoaded', showArtists);
 
-
+initLocalStorage();
 
 
 // We can increment the score by clicking the +1 button.
-// We wan delete a song from the list by clicking the bin icon.
 // We can filter the list, by searching for a song title
 // We can filter the list, by selecting a song style in the select.
 // When we click the reset filters button, the filter form is reset, and the list comes back to normal.

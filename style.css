@@ -57,15 +57,26 @@ fieldset {
 }
 
 .form_filter {
-    grid-row: 1/ 7;
-    grid-column: 2 / 7;
+    grid-row: 1/ 2;
+    grid-column: 2 / 5;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.reset {
+    background: #F3F3F3;
+    border: 2px solid #0083C3;
+    box-sizing: border-box;
+    border-radius: 5px;
+    color: blue;
+    text-transform: uppercase;
+    height: 33px;
 }
 
 ul {
     grid-column: 2/ 7;
-    grid-row: 2/ 3;
     list-style: none;
     margin: 0;
     display: flex;

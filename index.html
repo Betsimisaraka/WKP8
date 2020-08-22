@@ -19,15 +19,15 @@
             </header>
             <fieldset>
                 <label for="title">Song title</label>
-                <input type="text" id="title" name="title" placeholder="Title">
+                <input type="text" id="title" name="title" placeholder="Title"required>
             </fieldset>
             <fieldset>
                 <label for="author">Artist name</label>
-                <input type="text" id="author" name="author" placeholder="Artist name">
+                <input type="text" id="author" name="author" placeholder="Artist name" required>
             </fieldset>
             <fieldset>
                 <label for="">Song style</label>
-                <select name="style" id="style">
+                <select name="style" id="style" required>
                     <option value="basesa">Basesa</option>
                     <option value="slow">Slow</option>
                     <option value="regue">Regue</option>
@@ -38,22 +38,22 @@
             </fieldset>
             <fieldset>
                 <label for="length">Song length</label>
-                <input type="number" id="length" name="length" placeholder="Length">
+                <input type="number" id="length" name="length" placeholder="Length" required>
             </fieldset>
             <fieldset>
                 <label for="picture">Artist picture</label>
-                <input type="url" id="picture" name="picture" placeholder="Url of the artist pic">
+                <input type="url" id="picture" name="picture" placeholder="Url of the artist pic" required>
             </fieldset>
             <button type="submit" class="submitbtn">Add</button>
         </form>
         <form action="" class="form_filter">
             <fieldset>
                 <label for="searchtitle">Search a song</label>
-                <input type="text" id="searchtitle" name="searchtitle" placeholder="Enter a song title">
+                <input type="text" id="searchtitle" name="searchtitle" placeholder="Enter a song title" required>
             </fieldset>
             <fieldset>
                 <label for="selesctstyle">Select a style</label>
-                <select name="selectstyle" id="selectstyle">
+                <select name="selectstyle" id="selectstyle" required>
                     <option value="Basesa">Basesa</option>
                     <option value="Slow">Slow</option>
                     <option value="Regue">Regue</option>
@@ -62,7 +62,7 @@
                     <option value="Fast">Fast</option>
                 </select>
             </fieldset>
-            <!-- <button class="reset">Reset filter</button> -->
+            <button class="reset">Reset filter</button>
         </form>
         <ul class="artist_list">
             
