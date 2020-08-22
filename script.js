@@ -1,6 +1,6 @@
 // That's a list of songs sorted from the most popular to the least popular.
  
-const artists = [
+let artists = [
     {
         title: "My heart will go on",
         author: "Celine Dion",
@@ -33,7 +33,8 @@ const artists = [
 const formElement = document.querySelector('.form_submit');
 const artistList = document.querySelector('.artist_list');
 
-const handleArtist = () => {
+const showArtists = () => {
+    // The song list is always sorted from the highest score song to the lowest.
     const scoreSorted = artists.sort((a, b) => (b.score - a.score));
     const html = artists.map(song => {
          return `
@@ -59,8 +60,7 @@ const handleArtist = () => {
     artistList.innerHTML = html;
     return scoreSorted;
     
-}
-handleArtist();
+};
 
 const displayAddBtn = e => {
     e.preventDefault();
@@ -70,6 +70,7 @@ const displayAddBtn = e => {
         author: form.author.value,
         style: form.style.value,
         length: form.length.value,
+        // When we add a new song to the hit parade, the song score is set to zero.
         score: 0,
         picture: form.picture.value,
         id: Date.now(),
@@ -80,10 +81,28 @@ const displayAddBtn = e => {
     artistList.dispatchEvent(new CustomEvent('artistUpdated'));
 }
 
-formElement.addEventListener('submit', displayAddBtn);
+const deleteButton = idToDel => {
+    artists = artists.filter(artist => artist.id !== idToDel);
+    artistList.dispatchEvent(new CustomEvent('artistUpdated'));
+}
 
-// When we add a new song to the hit parade, the song score is set to zero.
-// The song list is always sorted from the highest score song to the lowest.
+const handleClicks = e => {
+    const delButton = e.target.closest('button.deletebtn');
+    if (delButton) {
+        const id = Number(delButton.value);
+        deleteButton(id);
+    }
+}
+
+
+artistList.addEventListener('click', handleClicks);
+formElement.addEventListener('submit', displayAddBtn);
+artistList.addEventListener('artistUpdated', showArtists);
+window.addEventListener('DOMContentLoaded', showArtists);
+
+
+
+
 // We can increment the score by clicking the +1 button.
 // We wan delete a song from the list by clicking the bin icon.
 // We can filter the list, by searching for a song title

@@ -24,6 +24,7 @@ main {
     /* grid-row: 2/ 3; */
     grid-column: 1 / 2; 
     width: 235px;
+    height: 450px;
     padding: 16px;
     background: #FFFFFF;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
