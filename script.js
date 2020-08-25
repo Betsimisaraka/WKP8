@@ -1,6 +1,27 @@
 // That's a list of songs sorted from the most popular to the least popular.
  
-let artists = [];
+let artists = [
+    {
+        title: 'I love you',
+        author: 'Dady love',
+        style: 'Slow',
+        length: '3',
+        // When we add a new song to the hit parade, the song score is set to zero.
+        picture: '',
+        score: 3,
+        id: 02,
+    },
+    {
+        title: 'I love you',
+        author: 'Dady love',
+        style: 'Slow',
+        length: '5',
+        // When we add a new song to the hit parade, the song score is set to zero.
+        picture: '',
+        score: 5,
+        id: 02,
+    }
+];
 
 const formElement = document.querySelector('.form_submit');
 const artistList = document.querySelector('.artist_list');
@@ -9,20 +30,21 @@ const searchInput = document.querySelector('#searchtitle');
 const selectStyle = document.querySelector('#selectstyle');
 
 const showArtists = (e) => {
-    let filteredArtists = [...artists];
-    // filter the author stuff if we want that
-    const artistsFiltered = filteredArtists.filter(artist => {
-        if (artist.author === formElement2.searchtitle.value) {
-            return true;
-        }
-        if (artist.style === formElement2.selectstyle.value) {
-            return true;
-        }
-        return false;
-    }); console.log(artistsFiltered);
+    search();
+    // let filteredArtists = [...artists];
+    // // filter the author stuff if we want that
+    // const artistsFiltered = filteredArtists.filter(artist => {
+    //     if (artist.author === formElement2.searchtitle.value) {
+    //         return true;
+    //     }
+    //     if (artist.style === formElement2.selectstyle.value) {
+    //         return true;
+    //     }
+    //     return false;
+    // }); console.log(artistsFiltered);
     //The song list is always sorted from the highest score song to the lowest.
-    const scoreSorted = filteredArtists.sort((a, b) => (b.score - a.score));
-    const html = filteredArtists.map(song => {
+    const scoreSorted = artists.sort((a, b) => (b.score - a.score));
+    const html = artists.map(song => {
          return `
         <li>
         <img src="${song.picture}"
@@ -33,7 +55,7 @@ const showArtists = (e) => {
         </div>
         <div>
             <p>${song.author}</p>
-            <small>${song.length}</small>
+            <small>${song.length}min</small>
         </div>
         <p>Score:<span class="score">${song.score}</span></p>
         <div>
@@ -44,7 +66,7 @@ const showArtists = (e) => {
     `;
     }).join('');
     artistList.innerHTML = html;
-    return scoreSorted;
+    scoreSorted;
     
 };
 
@@ -57,8 +79,8 @@ const displayAddBtn = e => {
         style: form.style.value,
         length: form.length.value,
         // When we add a new song to the hit parade, the song score is set to zero.
-        score: 0,
         picture: form.picture.value,
+        score: 0,
         id: Date.now(),
     }
     artists.push(newArtist);
@@ -73,12 +95,15 @@ const deleteButton = idToDel => {
     artistList.dispatchEvent(new CustomEvent('artistUpdated'));
 }
 
+var score = 0;
 const incrementScore = idToIncrem => {
-       const artistToUpdate = artists.find(artist => artist.id === idToIncrem);
-       //artistToUpdate.score = !artistToUpdate.score;
-
+    let artistsScore = artists.find(artist => artist.id === idToIncrem);
+    artistsScore = document.querySelector('span.score');
+    artistsScore.score = score++;
+    artistsScore.textContent = score;
     artistList.dispatchEvent(new CustomEvent('artistUpdated'));
-}; console.log(incrementScore());
+}
+
 
 const handleClicks = e => {
     const delButton = e.target.closest('button.deletebtn');
@@ -88,36 +113,59 @@ const handleClicks = e => {
     }
     const incrementbtn = e.target.closest('button.updatebtn')
     if (incrementbtn) {
-        incrementScore();
+        const id = Number(incrementbtn.value);
+       incrementScore(id);
     }
 }
 
-const initLocalStorage = () => {
-    const artistsItems = JSON.parse(localStorage.getItem('artists'));
-    if (!artistsItems) {
-        artists = [];
-    } else {
-        artists = artistsItems;
-    }
-    artistList.dispatchEvent(new CustomEvent('artistUpdated'));
-};
+// const initLocalStorage = () => {
+//     const artistsItems = JSON.parse(localStorage.getItem('artists'));
+//     if (!artistsItems) {
+//         artists = [];
+//     } else {
+//         artists = artistsItems;
+//     }
+//     //artistList.dispatchEvent(new CustomEvent('artistUpdated'));
+// };
 
 const updateLocalStorage = () => {
     localStorage.setItem('artists', JSON.stringify(artists));
 };
 
-//EVENT LISTENER
+// //EVENT LISTENER
 artistList.addEventListener('click', handleClicks);
 formElement.addEventListener('submit', displayAddBtn);
 artistList.addEventListener('artistUpdated', showArtists);
 artistList.addEventListener('artistUpdated', updateLocalStorage);
 window.addEventListener('DOMContentLoaded', showArtists);
 
-initLocalStorage();
+function search(searchString) {
+    //we test if searchString is empty in that case we just return the original data
+    if (typeof searchString !== 'string' || searchString.length === 0) {
+    return artists;
+    }
+    
+    //we make search string lower case
+    let searchLower = searchString.toLowerCase();
+    let filtered = artists.filter(song => {
+    if (song.title.includes(searchLower)) {
+    return true;
+    }
+    
+    if (song.style.includes(searchLower)) {
+    return true;
+    }
+    
+    return false;
+    });
+    return filtered;
+};
+
+//initLocalStorage();
 
 
-// We can increment the score by clicking the +1 button.
-// We can filter the list, by searching for a song title
-// We can filter the list, by selecting a song style in the select.
-// When we click the reset filters button, the filter form is reset, and the list comes back to normal.
-// The data will be saved on the localstorage (except when you filter data)
+// // We can increment the score by clicking the +1 button.
+// // We can filter the list, by searching for a song title
+// // We can filter the list, by selecting a song style in the select.
+// // When we click the reset filters button, the filter form is reset, and the list comes back to normal.
+// // The data will be saved on the localstorage (except when you filter data)
